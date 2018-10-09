@@ -184,7 +184,9 @@
 (global-subword-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(global-hl-line-mode +1)
+(use-package hl-line
+  :config
+  (global-hl-line-mode +1))
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (setq ring-bell-function 'ignore)
@@ -352,7 +354,9 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 (use-package leuven-theme
   :config
   (load-theme 'leuven t)
-  (set-face-attribute hl-line-face nil :underline nil))
+  (global-hl-line-mode +1)
+  (set-face-attribute 'hl-line nil :underline nil)
+  )
 
 (use-package doom-themes
   :disabled t
@@ -360,14 +364,13 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (load-theme 'doom-vibrant t))
 
 (use-package doom-modeline
-  :disabled t
   :defer t
   :hook (after-init . doom-modeline-init)
   :config
   (setq doom-modeline-buffer-file-name-style 'truncate-upto-root))
 
 (use-package smart-mode-line
-  ;; :disabled t
+  :disabled t
   :config
   (setq sml/theme 'light)
   (sml/setup))
@@ -388,8 +391,7 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   ;; (add-to-list 'flycheck-disabled-checkers 'emacs-lisp)
   ;; (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-  (add-hook 'prog-mode-hook #'flycheck-mode)
-  :delight flycheck-mode)
+  (add-hook 'prog-mode-hook #'flycheck-mode))
 (use-package flycheck-posframe
   :disabled t
   :after flycheck
@@ -482,10 +484,10 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 
 (use-package hl-todo
   :config
-  (setq hl-todo-keyword-faces
-        `(("TODO"  . ,(face-foreground 'warning))
-          ("FIXME" . ,(face-foreground 'error))
-          ("NOTE"  . ,(face-foreground 'success))))
+  ;; (setq hl-todo-keyword-faces
+  ;;       `(("TODO"  . ,(face-foreground 'warning))
+  ;;         ("FIXME" . ,(face-foreground 'error))
+  ;;         ("NOTE"  . ,(face-foreground 'success))))
   (add-hook 'prog-mode-hook #'hl-todo-mode))
 
 (use-package visual-regexp

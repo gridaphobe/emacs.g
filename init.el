@@ -579,6 +579,12 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 
 (use-package docker-tramp)
 
+(use-package json-mode
+  :mode (("\\.json\\'" . json-mode)))
+
+(use-package yaml-mode
+  :mode (("\\.ya?ml\\'" . yaml-mode)))
+
 (use-package org
   :bind (("C-c a"   . org-agenda)
          ("C-c c"   . org-capture)

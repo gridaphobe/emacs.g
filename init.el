@@ -169,7 +169,8 @@
 (let ((font
        ;;"Input Mono Compressed"
        ;;"Monoid"
-       "SF Mono"
+       ;; "SF Mono"
+       "Input"
        ))
   (set-fontset-font "fontset-default"
                     'unicode
@@ -184,9 +185,6 @@
 (global-subword-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(use-package hl-line
-  :config
-  (global-hl-line-mode +1))
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (setq ring-bell-function 'ignore)
@@ -342,7 +340,8 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   :hook (magit-mode . magit-todos-mode)
   :config
   (setq magit-todos-require-colon nil)
-  (define-key magit-todos-section-map "j" nil))
+  ;;(define-key magit-todos-section-map "j" nil)
+  )
 (use-package magithub
   :after (magit no-littering)
   :preface
@@ -352,16 +351,24 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (magithub-feature-autoinject 'all))
 
 (use-package leuven-theme
+  :disabled t
   :config
   (load-theme 'leuven t)
   (global-hl-line-mode +1)
-  (set-face-attribute 'hl-line nil :underline nil)
+  (add-hook 'after-init-hook (lambda () (set-face-attribute 'hl-line nil :underline nil)))
   )
 
-(use-package doom-themes
+(use-package solarized-theme
   :disabled t
   :config
-  (load-theme 'doom-vibrant t))
+  (setq solarized-distinct-fringe-background t)
+  (setq solarized-use-variable-pitch nil)
+  (load-theme 'solarized-light t))
+
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-italic nil)
+  (load-theme 'doom-solarized-light t))
 
 (use-package doom-modeline
   :defer t
@@ -372,7 +379,6 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 (use-package smart-mode-line
   :disabled t
   :config
-  (setq sml/theme 'light)
   (sml/setup))
 
 (use-package zerodark-theme
@@ -484,10 +490,10 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 
 (use-package hl-todo
   :config
-  ;; (setq hl-todo-keyword-faces
-  ;;       `(("TODO"  . ,(face-foreground 'warning))
-  ;;         ("FIXME" . ,(face-foreground 'error))
-  ;;         ("NOTE"  . ,(face-foreground 'success))))
+  (setq hl-todo-keyword-faces
+        `(("TODO"  . ,(face-foreground 'warning))
+          ("FIXME" . ,(face-foreground 'error))
+          ("NOTE"  . ,(face-foreground 'success))))
   (add-hook 'prog-mode-hook #'hl-todo-mode))
 
 (use-package visual-regexp

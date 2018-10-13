@@ -387,6 +387,10 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (load-theme 'zerodark t)
   (zerodark-setup-modeline-format))
 
+(use-package beacon
+  :config
+  (beacon-mode +1))
+
 (use-package flycheck
   :defer t
   ;; :bind (([remap next-error] . flycheck-next-error)
@@ -612,6 +616,8 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (setq org-capture-templates
         `(("t" "Todo" entry (file+headline ,org-default-notes-file "Tasks")
            "* TODO %?\n%U\n%i\n%a"))))
+(use-package ox-reveal
+  :after org)
 
 ;;;; misc
 
@@ -626,6 +632,12 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (scroll-up (/ (window-body-height) 2)))
 (bind-key "C-v" #'scroll-half-page-up)
 
+(use-package zap-up-to-char
+  :bind (("M-z" . zap-up-to-char)))
+
+(use-package hippie-exp
+  :bind (("M-/" . hippie-expand)))
+
 (use-package autorevert :delight auto-revert-mode)
 (use-package outline    :delight outline-minor-mode)
 (use-package reveal     :delight reveal-mode)
@@ -635,6 +647,19 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   :config
   (ws-butler-global-mode +1)
   :delight ws-butler-mode)
+
+(use-package avy
+  :bind (("M-g w" . avy-goto-word-1)))
+(use-package ace-window
+  :bind (("C-x o"   . ace-window)
+         ("C-x C-o" . ace-window))
+  :config
+  (setq aw-dispatch-always t))
+
+(use-package switch-window
+  :disabled t
+  :bind (("C-x o"   . switch-window)
+         ("C-x C-o" . switch-window)))
 
 ;; Local Variables:
 ;; indent-tabs-mode: nil

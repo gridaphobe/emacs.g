@@ -235,8 +235,8 @@
 
 (setq require-final-newline t)
 
-(setq indent-tabs-mode nil)   ;; don't use tabs to indent
-(setq tab-width 8)            ;; but maintain correct appearance
+(setq-default indent-tabs-mode nil)   ;; don't use tabs to indent
+(setq tab-width 8)                    ;; but maintain correct appearance
 
 ;; ediff defaults
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -336,6 +336,7 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   :config
   (setq magit-diff-refine-hunk t))
 (use-package magit-todos
+  :disabled t
   :after magit
   :hook (magit-mode . magit-todos-mode)
   :config
@@ -415,6 +416,9 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (setq company-idle-delay nil)
   (setq company-require-match 'never)
   (global-company-mode +1))
+
+(use-package deadgrep
+  :bind ("<f5>" . deadgrep))
 
 ;;;; expand-region
 (use-package expand-region
@@ -566,6 +570,9 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (remove-hook 'c-mode-hook #'rtags-mode)
   (remove-hook 'c++-mode-hook #'rtags-mode)
   )
+(use-package cmake-mode
+  :mode (("CMakeLists\\.txt\\'" . cmake-mode)
+         ("\\.cmake\\'" . cmake-mode)))
 
 ;;;; emacs lisp
 (defun imenu-elisp-sections ()

@@ -581,6 +581,8 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (add-to-list 'imenu-generic-expression '(nil "^(use-package \\(.+\\)$" 1) t))
 (add-hook 'emacs-lisp-mode-hook 'imenu-elisp-sections)
 
+(use-package rust-mode)
+
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
@@ -639,7 +641,7 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (scroll-up (/ (window-body-height) 2)))
 (bind-key "C-v" #'scroll-half-page-up)
 
-(use-package zap-up-to-char
+(use-package misc
   :bind (("M-z" . zap-up-to-char)))
 
 (use-package hippie-exp
@@ -658,13 +660,14 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 (use-package avy
   :bind (("M-g w" . avy-goto-word-1)))
 (use-package ace-window
+  :disabled t
   :bind (("C-x o"   . ace-window)
          ("C-x C-o" . ace-window))
   :config
   (setq aw-dispatch-always t))
 
 (use-package switch-window
-  :disabled t
+  ;; :disabled t
   :bind (("C-x o"   . switch-window)
          ("C-x C-o" . switch-window)))
 

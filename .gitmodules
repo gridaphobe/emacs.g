@@ -40,6 +40,9 @@
 [submodule "company"]
 	path = lib/company
 	url = git@github.com:company-mode/company-mode.git
+[submodule "company-box"]
+	path = lib/company-box
+	url = git@github.com:sebastiencs/company-box.git
 [submodule "cquery"]
 	path = lib/cquery
 	url = git@github.com:cquery-project/emacs-cquery.git
@@ -111,6 +114,9 @@
 [submodule "git-modes"]
 	path = lib/git-modes
 	url = git@github.com:magit/git-modes.git
+[submodule "graphql"]
+	path = lib/graphql
+	url = git@github.com:vermiculus/graphql.el.git
 [submodule "groovy-mode"]
 	path = lib/groovy-mode
 	url = git@github.com:Groovy-Emacs-Modes/groovy-emacs-modes.git
@@ -135,6 +141,9 @@
 	path = lib/ivy
 	url = git@github.com:abo-abo/swiper.git
 	info-path = doc
+[submodule "ivy-posframe"]
+	path = lib/ivy-posframe
+	url = git@github.com:tumashu/ivy-posframe.git
 [submodule "json-mode"]
 	path = lib/json-mode
 	url = git@github.com:joshwnj/json-mode.git
@@ -147,6 +156,9 @@
 [submodule "lcr"]
 	path = lib/lcr
 	url = git@github.com:jyp/lcr.git
+[submodule "lean-mode"]
+	path = lib/lean-mode
+	url = git@github.com:leanprover/lean-mode.git
 [submodule "leuven-theme"]
 	path = lib/leuven-theme
 	url = git@github.com:fniessen/emacs-leuven-theme.git
@@ -219,6 +231,9 @@
 [submodule "rich-minority"]
 	path = lib/rich-minority
 	url = git@github.com:Malabarba/rich-minority.git
+[submodule "rust-mode"]
+	path = lib/rust-mode
+	url = git@github.com:rust-lang/rust-mode.git
 [submodule "s"]
 	path = lib/s
 	url = git@github.com:magnars/s.el.git
@@ -246,6 +261,9 @@
 [submodule "switch-window"]
 	path = lib/switch-window
 	url = git@github.com:dimitri/switch-window.git
+[submodule "treepy"]
+	path = lib/treepy
+	url = git@github.com:volrath/treepy.el.git
 [submodule "undo-tree"]
 	path = lib/undo-tree
 	url = git@github.com:emacsorphanage/undo-tree.git

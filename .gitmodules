@@ -111,6 +111,11 @@
 [submodule "flycheck-posframe"]
 	path = lib/flycheck-posframe
 	url = git@github.com:alexmurray/flycheck-posframe.git
+[submodule "forge"]
+	path = lib/forge
+	url = git@github.com:magit/forge.git
+	recursive-byte-compile = true
+	info-path = docs
 [submodule "ghub"]
 	path = lib/ghub
 	url = git@github.com:magit/ghub.git

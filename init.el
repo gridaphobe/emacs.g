@@ -353,6 +353,8 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   :defer t
   :config
   (setq magit-diff-refine-hunk t))
+(use-package forge
+  :after magit)
 (use-package magit-todos
   :disabled t
   :after magit
@@ -362,6 +364,7 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   ;;(define-key magit-todos-section-map "j" nil)
   )
 (use-package magithub
+  :disabled t
   :after (magit no-littering)
   :preface
   ;; Magithub is not well-behaved, so this needs to be set early

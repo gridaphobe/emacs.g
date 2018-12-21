@@ -247,6 +247,23 @@
 
 ;;;; macOS stuff
 (when (eq system-type 'darwin)
+  (when (eq window-system 'mac)
+    ;; Emacs users obviously have little need for Command and Option keys,
+    ;; but they do need Meta and Super
+    (setq mac-pass-command-to-system nil
+          mac-pass-control-to-system nil)
+    (setq mac-command-modifier 'super)
+    (setq mac-option-modifier 'meta)
+    (setq mac-mouse-wheel-smooth-scroll t)
+    (mac-auto-operator-composition-mode)
+    (setq mac-frame-tabbing nil)
+    (setq mac-mouse-wheel-smooth-scroll nil)
+    ;; (defun my/reset-frame ()
+    ;;   (make-frame)
+    ;;   (select-frame (get-other-frame))
+    ;;   (delete-frame (get-other-frame)))
+    ;; (add-hook 'after-init-hook 'my/reset-frame)
+    )
   (setq ns-command-modifier 'super
 	ns-option-modifier 'meta
 	ns-use-native-fullscreen t)
@@ -333,6 +350,7 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (setq epa-pinentry-mode 'loopback))
 
 (use-package magit
+  :defer t
   :config
   (setq magit-diff-refine-hunk t))
 (use-package magit-todos
@@ -389,11 +407,12 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (zerodark-setup-modeline-format))
 
 (use-package beacon
+  :disabled t
   :config
   (beacon-mode +1))
 
 (use-package flycheck
-  :defer t
+  :hook (prog-mode . flycheck-mode)
   ;; :bind (([remap next-error] . flycheck-next-error)
   ;;        ([remap previous-error] . flycheck-previous-error))
   :config
@@ -402,20 +421,60 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   ;; (add-to-list 'flycheck-disabled-checkers 'emacs-lisp)
   ;; (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-  (add-hook 'prog-mode-hook #'flycheck-mode))
+  ;;(add-hook 'prog-mode-hook #'flycheck-mode)
+  )
 (use-package flycheck-posframe
-  :disabled t
-  :after flycheck
-  :config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
+  :hook (flycheck-mode . flycheck-posframe-mode)
+  :config
+  (setq flycheck-posframe-warning-prefix "⚠ "
+        flycheck-posframe-info-prefix "··· "
+        flycheck-posframe-error-prefix "✕ "))
 
 (use-package company
-  :demand t
   :delight company-mode
   :bind (("<M-tab>" . company-manual-begin))
   :config
   (setq company-idle-delay nil)
   (setq company-require-match 'never)
   (global-company-mode +1))
+(use-package company-box
+  :hook (company-mode . company-box-mode)
+  :config
+  (setq company-box-backends-colors nil
+        company-box-max-candidates 50
+        company-box-icons-yasnippet (all-the-icons-material "short_text" :height 0.8 :face 'all-the-icons-green)
+        company-box-icons-unknown (all-the-icons-material "find_in_page" :height 0.8 :face 'all-the-icons-purple)
+        company-box-icons-elisp
+        (list (all-the-icons-material "functions"                  :height 0.8 :face 'all-the-icons-red)
+              (all-the-icons-material "check_circle"               :height 0.8 :face 'all-the-icons-blue)
+              (all-the-icons-material "stars"                      :height 0.8 :face 'all-the-icons-orange)
+              (all-the-icons-material "format_paint"               :height 0.8 :face 'all-the-icons-pink))
+        company-box-icons-lsp
+        `((1  . ,(all-the-icons-material "text_fields"              :height 0.8 :face 'all-the-icons-green)) ; text
+          (2  . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))   ; method
+          (3  . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))   ; function
+          (4  . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))   ; constructor
+          (5  . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))   ; field
+          (6  . ,(all-the-icons-material "adjust"                   :height 0.8 :face 'all-the-icons-blue))  ; variable
+          (7  . ,(all-the-icons-material "class"                    :height 0.8 :face 'all-the-icons-red))   ; class
+          (8  . ,(all-the-icons-material "settings_input_component" :height 0.8 :face 'all-the-icons-red))   ; interface
+          (9  . ,(all-the-icons-material "view_module"              :height 0.8 :face 'all-the-icons-red))   ; module
+          (10 . ,(all-the-icons-material "settings"                 :height 0.8 :face 'all-the-icons-red))   ; property
+          (11 . ,(all-the-icons-material "straighten"               :height 0.8 :face 'all-the-icons-red))   ; unit
+          (12 . ,(all-the-icons-material "filter_1"                 :height 0.8 :face 'all-the-icons-red))   ; value
+          (13 . ,(all-the-icons-material "plus_one"                 :height 0.8 :face 'all-the-icons-red))   ; enum
+          (14 . ,(all-the-icons-material "filter_center_focus"      :height 0.8 :face 'all-the-icons-red))   ; keyword
+          (15 . ,(all-the-icons-material "short_text"               :height 0.8 :face 'all-the-icons-red))   ; snippet
+          (16 . ,(all-the-icons-material "color_lens"               :height 0.8 :face 'all-the-icons-red))   ; color
+          (17 . ,(all-the-icons-material "insert_drive_file"        :height 0.8 :face 'all-the-icons-red))   ; file
+          (18 . ,(all-the-icons-material "collections_bookmark"     :height 0.8 :face 'all-the-icons-red))   ; reference
+          (19 . ,(all-the-icons-material "folder"                   :height 0.8 :face 'all-the-icons-red))   ; folder
+          (20 . ,(all-the-icons-material "people"                   :height 0.8 :face 'all-the-icons-red))   ; enumMember
+          (21 . ,(all-the-icons-material "pause_circle_filled"      :height 0.8 :face 'all-the-icons-red))   ; constant
+          (22 . ,(all-the-icons-material "streetview"               :height 0.8 :face 'all-the-icons-red))   ; struct
+          (23 . ,(all-the-icons-material "event"                    :height 0.8 :face 'all-the-icons-red))   ; event
+          (24 . ,(all-the-icons-material "control_point"            :height 0.8 :face 'all-the-icons-red))   ; operator
+          (25 . ,(all-the-icons-material "class"                    :height 0.8 :face 'all-the-icons-red)))))
 
 (use-package deadgrep
   :bind ("<f5>" . deadgrep))
@@ -432,7 +491,7 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 
 ;;;; ivy
 (use-package ivy
-  :demand t
+  :hook ((after-init . ivy-mode))
   :delight ivy-mode
   :bind (("C-r" . ivy-resume))
   :config
@@ -442,8 +501,7 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (setq ivy-format-function #'ivy-format-function-line)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-virtual-abbreviate 'abbreviate)
-  (setq magit-completing-read-function #'ivy-completing-read)
-  (ivy-mode +1))
+  (setq magit-completing-read-function #'ivy-completing-read))
 (use-package counsel
   :bind (("C-h a"                          . counsel-apropos)
          ([remap describe-face]            . counsel-describe-face)
@@ -463,6 +521,38 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 (use-package smex
   :config
   (smex-initialize))
+(use-package ivy-posframe
+  :disabled t
+  :after ivy
+  :hook (ivy-mode . ivy-posframe-enable)
+  :preface
+  ;; This function searches the entire `obarray' just to populate
+  ;; `ivy-display-functions-props'. There are 15k entries in mine! This is
+  ;; wasteful, so...
+  (advice-add #'ivy-posframe-setup :override #'ignore)
+  :config
+  (setq ivy-fixed-height-minibuffer nil
+        ivy-posframe-parameters
+        `((min-width . 90)
+          (min-height . ,ivy-height)
+          (internal-border-width . 10)))
+  ;; ... let's do it manually instead
+  (unless (assq 'ivy-posframe-display-at-frame-bottom-left ivy-display-functions-props)
+    (dolist (fn (list 'ivy-posframe-display-at-frame-bottom-left
+                      'ivy-posframe-display-at-frame-center
+                      'ivy-posframe-display-at-point
+                      'ivy-posframe-display-at-frame-bottom-window-center
+                      'ivy-posframe-display
+                      'ivy-posframe-display-at-window-bottom-left
+                      'ivy-posframe-display-at-window-center
+                      ))
+      (push (cons fn '(:cleanup ivy-posframe-cleanup)) ivy-display-functions-props)))
+  ;; default to posframe display function
+  (setf (alist-get t ivy-display-functions-alist) #'ivy-posframe-display-at-frame-bottom-window-center)
+
+  ;; posframe doesn't work well with async sources
+  (dolist (fn '(swiper counsel-ag counsel-grep counsel-git-grep))
+    (setf (alist-get fn ivy-display-functions-alist) #'ivy-display-function-fallback)))
 
 ;;;; projectile
 (use-package projectile
@@ -478,7 +568,7 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (projectile-mode +1))
 
 (use-package smartparens
-  :demand t
+  :defer 1
   :bind (("C-k"   . sp-kill-hybrid-sexp)
          ("C-M-a" . sp-beginning-of-sexp)
          ("C-M-e" . sp-end-of-sexp)
@@ -509,6 +599,7 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
          ("C-M-%" . vr/query-replace)))
 
 (use-package helpful
+  :defer t
   ;; :bind (("C-h f" . helpful-callable)
   ;;        ("C-h k" . helpful-key)
   ;;        ("C-h v" . helpful-variable))
@@ -520,10 +611,9 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (which-key-mode +1))
 
 (use-package nav-flash
-  :config
-  (add-hook 'imenu-after-jump-hook         #'nav-flash-show)
-  (add-hook 'counsel-grep-post-action-hook #'nav-flash-show)
-  (add-hook 'save-place-find-file-hook     #'nav-flash-show))
+  :hook ((imenu-after-jump         . nav-flash-show)
+         (counsel-grep-post-action . nav-flash-show)
+         (save-place-find-file     . nav-flash-show)))
 
 ;;;; haskell
 (use-package haskell-mode
@@ -559,6 +649,9 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 ;;   :delight dante-mode)
 ;; (use-package attrap)
 
+;;(use-package agda2-mode
+;;  :load-path "/usr/local/share/emacs/site-lisp/agda/")
+
 ;;;; C/C++
 (use-package rtags
   :disabled t
@@ -567,9 +660,76 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
   (setq rtags-autostart-diagnostics t)
   (setq rtags-completions-enabled t)
   (setq rtags-display-result-backend 'ivy)
-  (remove-hook 'c-mode-hook #'rtags-mode)
-  (remove-hook 'c++-mode-hook #'rtags-mode)
+  (add-hook 'c-mode-hook #'rtags-start-process-unless-running)
+  (add-hook 'c++-mode-hook #'rtags-start-process-unless-running)
+  (add-hook 'objc-mode-hook #'rtags-start-process-unless-running)
+  (use-package flycheck-rtags
+    :load-path "/usr/local/share/emacs/site-lisp/rtags/"
+    :config
+    (defun my-flycheck-rtags-setup ()
+      "Configure flycheck-rtags for better experience."
+      (flycheck-select-checker 'rtags)
+      (setq-local flycheck-check-syntax-automatically nil)
+      (setq-local flycheck-highlighting-mode nil))
+    (add-hook 'c-mode-hook #'my-flycheck-rtags-setup)
+    (add-hook 'c++-mode-hook #'my-flycheck-rtags-setup)
+    (add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)))
+
+(use-package lsp
+  :hook ((c-mode    . lsp)
+         (c++-mode  . lsp)
+         (objc-mode . lsp))
+  :init
+  (require 'lsp-clients)
+  (when (equal system-type 'darwin)
+    (setq lsp-clients-clangd-executable "/usr/local/opt/llvm/bin/clangd"))
+  (lsp-clients-register-clangd)
+  (defun lsp-clients--clangd-command ()
+    "Generate the language server startup command."
+    (if (locate-dominating-file (buffer-file-name) ".bloomberg")
+        '("mmit-docker-clangd")
+      `(,lsp-clients-clangd-executable ,@lsp-clients-clangd-args)))
+  ;;(setq lsp-print-io t)
+  (setq lsp-enable-on-type-formatting nil)
+  (setq lsp-prefer-flymake nil)
+  ;; :config
+  ;; (use-package lsp-clangd
+  ;;   :disabled t
+  ;;   :init
+  ;;   (when (equal system-type 'darwin)
+  ;;     (setq lsp-clangd-executable "/usr/local/opt/llvm/bin/clangd"))
+  ;;   :hook ((c-mode    . lsp-clangd-c-enable)
+  ;;          (c++-mode  . lsp-clangd-c++-enable)
+  ;;          (objc-mode . lsp-clangd-objc-enable)))
   )
+(use-package lsp-ui
+  ;; :disabled t
+  ;;:hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-sideline-enable nil))
+(use-package ccls
+  :disabled t
+  :config
+  (setq ccls-args '("-log-file=/Users/eseidel13/.emacs.d/var/ccls/ccls.log")))
+(use-package cquery
+  :disabled
+  :hook ((c-mode    . lsp-cquery-enable)
+         (c++-mode  . lsp-cquery-enable)
+         (objc-mode . lsp-cquery-enable))
+  :config
+  (setq cquery-extra-args '("--log-file=~/.emacs.d/var/cquery/cquery.log"))
+  ;; (setq cquery-extra-init-params '(:compilationDatabaseDirectory "cmake.bld/Linux"))
+  )
+
+(use-package eglot
+  :disabled t
+  :hook ((c-mode    . eglot-ensure)
+         (c++-mode  . eglot-ensure)
+         (objc-mode . eglot-ensure))
+  :config
+  (add-to-list 'eglot-server-programs
+               '((c-mode c++-mode objc-mode) . ("make" "d-clangd"))))
+
 (use-package cmake-mode
   :mode (("CMakeLists\\.txt\\'" . cmake-mode)
          ("\\.cmake\\'" . cmake-mode)))
@@ -596,7 +756,8 @@ Use `copy-rectangle-as-kill' if `rectangle-mark-mode' is set."
 (use-package dockerfile-mode
   :mode (("Dockerfile'" . dockerfile-mode)))
 
-(use-package docker-tramp)
+(use-package docker-tramp
+  :defer t)
 
 (use-package json-mode
   :mode (("\\.json\\'" . json-mode)))

@@ -28,6 +28,9 @@
 [submodule "borg"]
 	path = lib/borg
 	url = git@github.com:emacscollective/borg.git
+[submodule "ccls"]
+	path = lib/ccls
+	url = git@github.com:MaskRay/emacs-ccls.git
 [submodule "change-inner"]
 	path = lib/change-inner
 	url = git@github.com:magnars/change-inner.el.git
@@ -77,6 +80,9 @@
 [submodule "doom-themes"]
 	path = lib/doom-themes
 	url = git@github.com:hlissner/emacs-doom-themes.git
+[submodule "eglot"]
+	path = lib/eglot
+	url = git@github.com:joaotavora/eglot.git
 [submodule "eldoc-eval"]
 	path = lib/eldoc-eval
 	url = git@github.com:thierryvolpiatto/eldoc-eval.git
@@ -130,6 +136,9 @@
 [submodule "hl-todo"]
 	path = lib/hl-todo
 	url = git@github.com:tarsius/hl-todo.git
+[submodule "ht"]
+	path = lib/ht
+	url = git@github.com:Wilfred/ht.el.git
 [submodule "hydra"]
 	path = lib/hydra
 	url = git@github.com:abo-abo/hydra.git
@@ -153,6 +162,9 @@
 [submodule "json-snatcher"]
 	path = lib/json-snatcher
 	url = git@github.com:Sterlingg/json-snatcher.git
+[submodule "jsonrpc"]
+	path = lib/jsonrpc
+	url = git@github.com:emacsmirror/jsonrpc.git
 [submodule "lcr"]
 	path = lib/lcr
 	url = git@github.com:jyp/lcr.git
